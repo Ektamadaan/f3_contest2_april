@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Opening Ceremony
+function OpeningCeremony(callback) {
+    console.log("Let the games begin");
+    setTimeout(() => {
+        const initialScores = { red: 0, blue: 0, green: 0, yellow: 0 };
+        console.log("Initial Scores:", initialScores);
+        Race100M(initialScores, callback);
+    }, 1000);
+}
+
+// Race 100M
+function Race100M(scores, callback) {
+    console.log("Race 100M begins");
+    setTimeout(() => {
+        const raceTimes = {
+            red: Math.floor(Math.random() * 6) + 10,
+            blue: Math.floor(Math.random() * 6) + 10,
+            green: Math.floor(Math.random() * 6) + 10,
+            yellow: Math.floor(Math.random() * 6) + 10
+        };
+
+        const sortedColors = Object.keys(raceTimes).sort((a, b) => raceTimes[a] - raceTimes[b]);
+
+        scores[sortedColors[0]] += 50;
+        scores[sortedColors[1]] += 25;
+
+        console.log("Race Times:", raceTimes);
+        console.log("Updated Scores:", scores);
+        console.log(`${sortedColors[0]} won the race.`);
+        
+        callback(scores, LongJump);
+    }, 3000);
+}
+
+// Long Jump
+function LongJump(scores, callback) {
+    console.log("Long Jump begins");
+    setTimeout(() => {
+        const selectedColor = ['red', 'yellow', 'green', 'blue'][Math.floor(Math.random() * 4)];
+        scores[selectedColor] += 150;
+
+        console.log("Long Jump winner:", selectedColor);
+        console.log("Updated Scores:", scores);
+
+        callback(scores, HighJump);
+    }, 2000);
+}
+
+// High Jump
+function HighJump(scores, callback) {
+    console.log("High Jump begins");
+    const userInput = prompt("What colour secured the highest jump?");
+    if (userInput && userInput.toLowerCase() in scores) {
+        const selectedColor = userInput.toLowerCase();
+        scores[selectedColor] += 100;
+
+        console.log("High Jump winner:", selectedColor);
+        console.log("Updated Scores:", scores);
+    } else {
+        console.log("Event was cancelled.");
+    }
+
+    callback(scores, AwardCeremony);
+}
+
+// Award Ceremony
+function AwardCeremony(scores) {
+    console.log("Award Ceremony begins");
+    console.log("Final Scores:", scores);
+
+    const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+    console.log(`${sortedScores[0][0]} came first with ${sortedScores[0][1]} points.`);
+    console.log(`${sortedScores[1][0]} came second with ${sortedScores[1][1]} points.`);
+    console.log(`${sortedScores[2][0]} came third with ${sortedScores[2][1]} points.`);
+}
+
+// Start the event
+OpeningCeremony(Race100M);
+    </script> 
+</body>
+</html>
